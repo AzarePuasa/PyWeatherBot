@@ -15,3 +15,6 @@ This is a project for NUS ISS PyDot Course. Here's a brief detail:
    - Summarize and display result
 
 4. This is DATA Related Project
+
+
+Note: This is a work in progress.
