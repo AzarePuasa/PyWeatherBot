@@ -1,4 +1,4 @@
-# PyWeatherBot
+# SG_PyWeatherBot
 Python Telegram bot for Weather in Singapore. 
 This is a project for NUS ISS PyDot Course. Here's a brief detail:
 
