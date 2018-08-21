@@ -8,13 +8,15 @@ This is a project for NUS ISS PyDot Course. Here's a brief detail:
    - provide instant weather forecast for current or specific location at the current time or the whole day 
    - Know if it will rain at that location or when rain is expected for that location.
 
-3. Tasks for this project:	 	
-   - Get Location details using geolocation-python	 	 	
-   - Retrieve Weather Data using data.gov weather API	 	 	
-   - Process request and return response using botogram 	
+3. This is DATA Related Project
+
+Version 1 Details:
+Tasked Completed/in progress:	 	 	 	
+   - Retrieve and parse 2Hr and 24hr Weather Data using data.gov weather API and save to MongoDB
+   - Process request and return response using botogram
    - Summarize and display result
 
-4. This is DATA Related Project
-
-
-Note: This is a work in progress.
+ToDos:	 	
+   - Get Location details using geolocation-python. Find nearest reading area.	 	 	
+   - Automate retrieval of Weather data 
+   - Store API Key in text file and read from text file at runtime. 
