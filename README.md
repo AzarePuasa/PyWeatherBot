@@ -18,5 +18,5 @@ Tasked Completed/in progress:
 
 ToDos:	 	
    - Get Location details using geolocation-python. Find nearest reading area.	 	 	
-   - Automate retrieval of Weather data 
+   - Automate updating of Weather data in mongodb
    - Store API Key in text file and read from text file at runtime. 
