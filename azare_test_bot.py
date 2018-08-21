@@ -2,7 +2,7 @@ import botogram
 from wfreader24hr import *
 from wfreader2hr import *
 
-bot = botogram.create("626630531:AAHlOund1NKL2A1OamMqfFQS2X2WN6woerQ")
+bot = botogram.create(<API KEY>)
 
 def sg_general_forecast():
     return "Thundery Showers"
