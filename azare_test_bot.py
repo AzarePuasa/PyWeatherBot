@@ -1,11 +1,36 @@
 import botogram
 from wfreader24hr import *
 from wfreader2hr import *
+from wfutility import readAPIKey
 
-bot = botogram.create(<API KEY>)
+bot = botogram.create(readAPIKey("telegram"))
 
 def sg_general_forecast():
-    return "Thundery Showers"
+    weather_forecast_reader = Weather24hrForecastReader()
+
+    weather_forecast_reader.read()
+
+    forecast_dic = weather_forecast_reader.getForecast()
+
+    forecast = "Latest 24 hr Weather for Singapore:"   
+        
+    forecast += "\nGeneral Forecast:"
+    forecast += "\nForecast: {}". format(forecast_dic.get('Forecast'))
+    forecast += "\nHumidity: {}". format(forecast_dic.get('Humidity')) 
+    forecast += "\nTemperature: {}". format(forecast_dic.get('Temperature')) 
+    forecast += "\nWind Speed: {}". format(forecast_dic.get('Windspeed')) 
+    forecast += "\nWind Direction: {}". format(forecast_dic.get('Winddirection')) 
+
+    forecast += "\n\nRegion Specific Forecast:" 
+    forecast += "\nWest: {}".format(forecast_dic.get('West')) 
+    forecast += "\nEast: {}".format(forecast_dic.get('East')) 
+    forecast += "\nCentral: {}".format(forecast_dic.get('Central')) 
+    forecast += "\nSouth: {}".format(forecast_dic.get('South')) 
+    forecast += "\nNorth: {}".format(forecast_dic.get('North')) 
+
+    forecast += "\n\nGeneral Forecast updated on {}". format(forecast_dic.get('Timestamp')) 
+
+    return forecast
 
 def location_forecast(location):
     weather_forecast_reader_2h = Weather2hForecastReader()
@@ -29,11 +54,9 @@ def weather_command(chat, message, args):
     Accepts only SG address.
     if none, will provide general forecast for singapore.
     """
-    weather_forecast_reader = Weather24hrForecastReader()
+    general_forecast = sg_general_forecast()
 
-    weather_forecast_reader.read()
-
-    chat.send(weather_forecast_reader.printForecast())
+    chat.send(general_forecast)
 
     if len(args) == 1:
         location = args[0]

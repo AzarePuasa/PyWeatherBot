@@ -29,11 +29,3 @@ class Weather2hForecastReader():
             
     def getForecastItem(self):
         return self.forecast_item
-
-
-weather_2h_forecast_reader = Weather2hForecastReader()
-weather_2h_forecast_reader.read()
-
-forecast_item = weather_2h_forecast_reader.getForecastItem()
-
-print(forecast_item.getItemAsDic())
