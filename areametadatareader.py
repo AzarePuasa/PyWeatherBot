@@ -22,12 +22,3 @@ class AreaMetadataReader():
              
     def getAreas(self):
         return self.list_areas
-
-#test
-area_metadata_read = AreaMetadataReader()
-area_metadata_read.read()
-
-areas_list = area_metadata_read.getAreas()
-
-for area in areas_list:
-    area.print()

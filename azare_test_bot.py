@@ -2,6 +2,7 @@ import botogram
 from wfreader24hr import *
 from wfreader2hr import *
 from wfutility import readAPIKey
+from wfgeolocation import wfGeolocation
 
 bot = botogram.create(readAPIKey("telegram"))
 
@@ -39,9 +40,11 @@ def location_forecast(location):
 
     item_dic = current_forecast_item.getItemAsDic()
 
+    timestamp = item_dic.get("time_stamp")
+
     for item in item_dic:
         if item == location:
-            return item_dic.get(item)
+            return timestamp,item_dic.get(item)
 
     return "No Forecast Found."
 
@@ -58,9 +61,23 @@ def weather_command(chat, message, args):
 
     chat.send(general_forecast)
 
-    if len(args) == 1:
-        location = args[0]
-        result = "Forecast for {}: {} ".format(location, location_forecast(location))
+    if len(args) > 0:
+        address = ''
+
+        for addresspart in args:
+            address += addresspart + " "  
+
+        wfGeoLocTest = wfGeolocation()
+
+        wfGeoLocTest.calculateDistance(address) 
+
+        area = wfGeoLocTest.getNearestArea()   
+
+        timestamp, forecast = location_forecast(area)
+
+        result = "Forecast for address: {}".format(address)
+        result += "\nNearest Reading Station: {}".format(area)
+        result += "\nForecast(timestamp {}): {} ".format(timestamp, forecast)
         chat.send(result)
 
 @bot.command("hello")
