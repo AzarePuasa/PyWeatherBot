@@ -13,7 +13,7 @@ class Weather2hForecastWriter():
         url = "https://api.data.gov.sg/v1/environment/2-hour-weather-forecast?date={}".format(date)
 
         response= requests.get(url)
-        print(response.text)
+
         api_response = response.json()
         items = api_response['items']
         last_item = items[-1]
@@ -68,7 +68,3 @@ class Weather2hForecastWriter():
 
     def getForecast(self):
         return self.forecast_item
-
-weather_2h_forecast_writer = Weather2hForecastWriter()
-
-weather_2h_forecast_writer.write()

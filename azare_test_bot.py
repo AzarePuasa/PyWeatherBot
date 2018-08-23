@@ -1,8 +1,9 @@
 import botogram
 from wfreader24hr import *
 from wfreader2hr import *
-from wfutility import readAPIKey
+from wfutility import readAPIKey,extractDateTime
 from wfgeolocation import wfGeolocation
+
 
 bot = botogram.create(readAPIKey("telegram"))
 
@@ -17,9 +18,9 @@ def sg_general_forecast():
         
     forecast += "\nGeneral Forecast:"
     forecast += "\nForecast: {}". format(forecast_dic.get('Forecast'))
-    forecast += "\nHumidity: {}". format(forecast_dic.get('Humidity')) 
-    forecast += "\nTemperature: {}". format(forecast_dic.get('Temperature')) 
-    forecast += "\nWind Speed: {}". format(forecast_dic.get('Windspeed')) 
+    forecast += "\nHumidity: {} {}". format(forecast_dic.get('Humidity'), "%") 
+    forecast += "\nTemperature: {} {}". format(forecast_dic.get('Temperature'),u"\u2103") 
+    forecast += "\nWind Speed: {} {}". format(forecast_dic.get('Windspeed'),"km/h") 
     forecast += "\nWind Direction: {}". format(forecast_dic.get('Winddirection')) 
 
     forecast += "\n\nRegion Specific Forecast:" 
@@ -29,7 +30,9 @@ def sg_general_forecast():
     forecast += "\nSouth: {}".format(forecast_dic.get('South')) 
     forecast += "\nNorth: {}".format(forecast_dic.get('North')) 
 
-    forecast += "\n\nGeneral Forecast updated on {}". format(forecast_dic.get('Timestamp')) 
+    datetime = extractDateTime(forecast_dic.get('Timestamp')).split("T")
+
+    forecast += "\n\nAs Of {}". format(datetime[1]) 
 
     return forecast
 
@@ -75,9 +78,12 @@ def weather_command(chat, message, args):
 
         timestamp, forecast = location_forecast(area)
 
-        result = "Forecast for address: {}".format(address)
-        result += "\nNearest Reading Station: {}".format(area)
-        result += "\nForecast(timestamp {}): {} ".format(timestamp, forecast)
+        result = "Forecast for: {}".format(address)
+        result += "\nNearest Location Label: {}".format(area)
+
+        datetime = extractDateTime(timestamp).split("T")
+
+        result += "\nForecast: {} (As of {}) ".format(forecast, datetime[1])
         chat.send(result)
 
 @bot.command("hello")

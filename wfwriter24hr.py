@@ -17,8 +17,7 @@ class Weather24hrForecastWriter():
         date = time.strftime("%Y-%m-%d")
         url = "https://api.data.gov.sg/v1/environment/24-hour-weather-forecast?date={}".format(date)
         response= requests.get(url)
-        print(response.text)
-
+        
         api_response = response.json()
 
         items = api_response['items']
@@ -98,8 +97,3 @@ class Weather24hrForecastWriter():
 
         result = posts.insert_one(post_data)
         print('One post: {0}'.format(result.inserted_id)) 
-
-
-latest_weather = Weather24hrForecastWriter()
-
-latest_weather.write()
