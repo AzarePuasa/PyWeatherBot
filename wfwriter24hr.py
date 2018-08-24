@@ -27,40 +27,11 @@ class Weather24hrForecastWriter():
         return last_item
 
     def write(self): 
-        item = self.pullLatestData()
-
         client = MongoClient('mongodb://localhost:27017')
         db = client['weather_24hr_forecast']
         
-        mycol = db.weather_24hr_forecast
-        
-        for key in item:
-    #         print("{} : {} | {}\n" .format(count, key, item.get(key)))
-            if key == "update_timestamp": 
-                self.item_dic[key] = item.get(key)
-#                 print("{}: {}" .format(key, self.item.get(key)))
-            if key == "timestamp" :
-                self.item_dic[key] = item.get(key)
-                print("{}: {}" .format(key, item.get(key)))
-            if key == "valid_period":
-                value_periods = item.get(key)
-                for valid_period in value_periods:
-                    self.item_dic[valid_period] = value_periods.get(valid_period) 
-            if key == "general":
-                generals = item.get(key)
-                general_forecast = GeneralForecast(generals)
-#                 general_forecast.summarize()  
-                self.general_forecast_dic = general_forecast.summaryInDic()
-            if key == "periods":
-                periods = item.get(key)
-                period_list = []
-                for period in periods:
-                    forecast_period = ForecastPeriod(period)
-                    period_list.append(forecast_period)
-                all_forecast_period = ForecastPeriods(period_list)
-                all_forecast_period.getActivePeriod()
-                self.active_period = all_forecast_period.summaryInDic()
-        
+        mycol = db.weather_24hr_forecast   
+
         mycol.drop()
         
         forecast = self.general_forecast_dic['Forecast']
@@ -97,3 +68,60 @@ class Weather24hrForecastWriter():
 
         result = posts.insert_one(post_data)
         print('One post: {0}'.format(result.inserted_id)) 
+
+        #write timestamp to log collection
+
+        mydb_log = client["sgwftimestamp"]
+        mycol_log = mydb_log["wf_24hr_last_timestamp_log"]
+
+        mycol_log.drop()
+
+        mydict = { "Updated": post_data["Timestamp"] }
+        print("mydict",mydict)
+
+        x = mycol_log.insert_one(mydict)
+
+        print('Timestamp Log: {0}'.format(x.inserted_id))
+
+    def pullLatestForecast(self): 
+        item = self.pullLatestData()
+ 
+        for key in item:
+            # print("{} : {} | {}\n" .format(count, key, item.get(key)))
+            if key == "update_timestamp": 
+                self.item_dic[key] = item.get(key)
+                # print("{}: {}" .format(key, self.item.get(key)))
+            if key == "timestamp" :
+                self.item_dic[key] = item.get(key)
+                print("{}: {}" .format(key, item.get(key)))
+            if key == "valid_period":
+                value_periods = item.get(key)
+                for valid_period in value_periods:
+                    self.item_dic[valid_period] = value_periods.get(valid_period) 
+            if key == "general":
+                generals = item.get(key)
+                general_forecast = GeneralForecast(generals)
+#                 general_forecast.summarize()  
+                self.general_forecast_dic = general_forecast.summaryInDic()
+            if key == "periods":
+                periods = item.get(key)
+                period_list = []
+                for period in periods:
+                    forecast_period = ForecastPeriod(period)
+                    period_list.append(forecast_period)
+                all_forecast_period = ForecastPeriods(period_list)
+                all_forecast_period.getActivePeriod()
+                self.active_period = all_forecast_period.summaryInDic()    
+
+    def getItemDic(self):
+        return self.item_dic
+    
+    def getGeneralForecast(self):
+        return self.general_forecast_dic
+
+    def getActivePeriodDic(self):
+        self.active_period
+
+# latest_wf_24hr = Weather24hrForecastWriter()
+# latest_wf_24hr.pullLatestForecast()
+# latest_wf_24hr.write()

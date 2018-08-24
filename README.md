@@ -10,15 +10,17 @@ This is a project for NUS ISS PyDot Course. Here's a brief detail:
 
 3. This is DATA Related Project
 
-Tasked Completed:	 	 	 	
-   - Retrieve and parse 2Hr and 24hr Weather Data using data.gov weather API and save to MongoDB
-   - Process request and return response using botogram
-   - Summarize and display result
-   - Get Lat/Long from address. Compute Distance from area label list and find nearest area label. Get 
-     the forecast for the area label.	 	 	
+4. Brief of task:	 	 	 	
+   - Create Weather Forecast(WF) writer to retrieve and parse 2Hr and 24hr Weather Data using data.gov weather API and save to MongoDB
+   - Create WF reader to read weather forecast from mongodb.
+   - Create WF geolocation. Get Lat/Long from address. calculate the proximity of address parameter with the    area label. 
+   - Create bot (using botogram) to process request and return response. Call WF reader to summarize and   
+     display result. Bot to accept optional address parameter. If available, use WF geolocation to get the 
+     nearest area label.
+   - Store API Key in text file and read from text file at runtime.      	 	
    - Automate updating of Weather data in mongodb(used cron tab)
-   - Store API Key in text file and read from text file at runtime.
 
-   
+
+5. Usage Details
 
 

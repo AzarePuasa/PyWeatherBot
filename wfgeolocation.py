@@ -34,6 +34,7 @@ class wfGeolocation():
 
         res = tree.findall('result')
         # let's see the results now
+        print(res)
 
         lat = res[0].find('geometry').find('location').find('lat').text
         # dig into the XML tree to find 'latitude'

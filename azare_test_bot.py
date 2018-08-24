@@ -15,8 +15,10 @@ def sg_general_forecast():
     forecast_dic = weather_forecast_reader.getForecast()
 
     forecast = "Latest 24 hr Weather for Singapore:"   
+
+    datetime = extractDateTime(forecast_dic.get('Timestamp')).split("T")
         
-    forecast += "\nGeneral Forecast:"
+    forecast += "\nGeneral Forecast(As Of {}):". format(datetime[1])
     forecast += "\nForecast: {}". format(forecast_dic.get('Forecast'))
     forecast += "\nHumidity: {} {}". format(forecast_dic.get('Humidity'), "%") 
     forecast += "\nTemperature: {} {}". format(forecast_dic.get('Temperature'),u"\u2103") 
@@ -29,10 +31,6 @@ def sg_general_forecast():
     forecast += "\nCentral: {}".format(forecast_dic.get('Central')) 
     forecast += "\nSouth: {}".format(forecast_dic.get('South')) 
     forecast += "\nNorth: {}".format(forecast_dic.get('North')) 
-
-    datetime = extractDateTime(forecast_dic.get('Timestamp')).split("T")
-
-    forecast += "\n\nAs Of {}". format(datetime[1]) 
 
     return forecast
 
@@ -60,9 +58,6 @@ def weather_command(chat, message, args):
     Accepts only SG address.
     if none, will provide general forecast for singapore.
     """
-    general_forecast = sg_general_forecast()
-
-    chat.send(general_forecast)
 
     if len(args) > 0:
         address = ''
@@ -71,6 +66,7 @@ def weather_command(chat, message, args):
             address += addresspart + " "  
 
         wfGeoLocTest = wfGeolocation()
+        print(address)
 
         wfGeoLocTest.calculateDistance(address) 
 
@@ -85,6 +81,9 @@ def weather_command(chat, message, args):
 
         result += "\nForecast: {} (As of {}) ".format(forecast, datetime[1])
         chat.send(result)
+    else:
+        general_forecast = sg_general_forecast()
+        chat.send(general_forecast)
 
 @bot.command("hello")
 def hello_command(chat, message, args):
